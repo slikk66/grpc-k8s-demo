@@ -1,0 +1,11 @@
+{
+    "name": "grpc-demo",
+    "devDependencies": {
+        "@types/node": "^8.0.0"
+    },
+    "dependencies": {
+        "@pulumi/aws": "1.6.0",
+        "@pulumi/awsx": "0.18.12",
+        "@pulumi/eks": "0.18.14"
+    }
+}
