@@ -1,4 +1,5 @@
 .DS_Store
-kubeconfig.json
+*-kubeconfig.json
 temp-certs/
 node_modules/
+*.pdf

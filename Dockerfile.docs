@@ -1,0 +1,16 @@
+FROM python:3.6-slim
+
+RUN apt-get update && \
+    apt-get install sudo libpq-dev build-essential -y && \
+    rm -rf /var/lib/apt/lists/*
+
+ADD ./docs/requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
+
+RUN mkdir /docs
+
+WORKDIR /docs
+
+RUN sphinx-quickstart -q -p k8s-demo -v 1.0 -a "Dan Billeci"
+
+CMD /bin/bash

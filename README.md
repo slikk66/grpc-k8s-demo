@@ -1,18 +1,17 @@
-# grpc_k8s
+# gRPC - k8s demo
 
-- This project will not work on Windows.  You can use WSL if needed.
-- Install AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html
-- Install Pulumi: `curl -sSL https://get.pulumi.com | sh`
-- Install NPM: https://www.npmjs.com/get-npm
-- Install required Node Packages: npm install
-- Install eks iam authenticator: See https://github.com/pulumi/eks#installing
+This project will not work on Windows OS, use WSL if needed.
 
-- add the ACM ARN to config
-- run the eks up
-- export the kubeconfig
+## Full documentation is available for project usage with the following steps:
+- Install GNU Make - https://www.gnu.org/software/make/
+- Install Docker - https://docs.docker.com/install/
+- From root of this repo, run `make docs`
+- Open the created documentation file in the root of this repo, `GrpcK8sDemo.pdf`
 
-pulumi stack output kubeconfig > kubeconfig.json
-export KUBECONFIG=$PWD/kubeconfig.json
-
-- run the ecr up
-- build the docker
+## TL/DR:
+- Refresh NPM (first run only): `make refresh-npm`
+- Init Pulumi stacks (first run only): `make pulumi-init`
+- Init infrastructure (first run only): `make init-infrastructure`
+- Generate TLS Certificates (as needed on changes): `DOMAIN=yourdomain.com make generate-tls`
+- Release application (as needed on changes): `make release`
+- Create public endpoint in R53 Zone (as needed on changes): `ZONE=ZYOURZONEID make set-endpoint`
