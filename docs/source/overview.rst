@@ -33,3 +33,9 @@ of the TLS certifcates, as well as updating the public zone with the application
 For TLS, I initially chose AWS ACM, but soon realized that EKS (verison 1.14) does not yet support NLB + ACM TLS
 Termination.  This feature is expeced in the upcoming 1.15 release.  So, alternatively I chose to use Let's Encrypt
 Certbot to create the certificates.
+
+Using these TLS certificates, I spun up an Nginx 1.17 sidecar container along with the gRPC server that terminates
+TLS and then passes the traffic along using the relatively new ``grpc_pass`` directive.  This allows us to have
+a highly available solution with multiple nodes running, each hosting a copy of the Pod and accessible through the same
+endpoint, the NLB.  Using ACM is a better solution, but this was a decent and simple alternative for the sake
+of this exercise.
