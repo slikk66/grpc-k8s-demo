@@ -11,7 +11,11 @@ const env = pulumi.getStack();
 // EKS finding suitable resources, but due to state tracking of the VPC
 // resource, these tags need to be marked as "ignored" to prevent subsequent
 // refreshes to remove the needed EKS tags
-let vpc = new awsx.ec2.Vpc(`k8s-vpc-${env}`, {
+let vpc_name = `k8s-vpc-${env}`;
+let vpc = new awsx.ec2.Vpc(vpc_name, {
+    tags: {
+        'Name': vpc_name
+    },
     subnets: [{
         type: 'public',
         ignoreChanges: [
