@@ -1,3 +1,4 @@
 .DS_Store
+kubeconfig.json
 temp-certs/
 node_modules/

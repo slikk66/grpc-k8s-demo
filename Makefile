@@ -13,4 +13,4 @@ generate-tls:
 	mkdir -p ${PWD}/pulumi/grpc-workload/temp-certs || true
 	rm -rf ${PWD}/temp-certs/*
 	docker run --rm -it -e AWS_PROFILE -v ${HOME}/.aws:/root/.aws -v ${PWD}/temp-certs:/etc/letsencrypt certbot/dns-route53 certonly --dns-route53 --non-interactive --agree-tos --email admin@${DOMAIN} -d ${DOMAIN} -d '*.${DOMAIN}'
-	cp ${PWD}/temp-certs/live/${DOMAIN}/* ${PWD}/pulumi/grpc-workload/temp-certs
+	cp -f ${PWD}/temp-certs/live/${DOMAIN}/* ${PWD}/pulumi/grpc-workload/temp-certs

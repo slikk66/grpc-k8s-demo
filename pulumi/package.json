@@ -6,6 +6,8 @@
     "dependencies": {
         "@pulumi/aws": "1.6.0",
         "@pulumi/awsx": "0.18.12",
-        "@pulumi/eks": "0.18.14"
+        "@pulumi/eks": "0.18.14",
+        "@types/js-base64": "latest",
+        "js-base64": "latest"
     }
 }

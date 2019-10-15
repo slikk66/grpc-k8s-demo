@@ -1,6 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as k8s from "@pulumi/kubernetes";
-
+import { Base64 } from 'js-base64';
 import * as fs from "fs";
 
 // pull environment from stack name
@@ -28,9 +28,10 @@ const nginxConfigName = nginxConfig.metadata.apply(x => x.name);
 // create tls secret from certificate
 const tlsSecret = new k8s.core.v1.Secret(`${appName}-tls`, {
     metadata: { labels: appLabels },
+    type: 'Opaque',
     data: {
-        "nginx.crt": fs.readFileSync("./temp-certs/fullchain.pem").toString(),
-        "nginx.key": fs.readFileSync("./temp-certs/privkey.pem").toString()
+        "nginx.crt": Base64.encode(fs.readFileSync("./temp-certs/fullchain.pem").toString()),
+        "nginx.key": Base64.encode(fs.readFileSync("./temp-certs/privkey.pem").toString())
     },
 }, { provider: provider });
 const tlsSecretName = tlsSecret.metadata.apply(x => x.name);
