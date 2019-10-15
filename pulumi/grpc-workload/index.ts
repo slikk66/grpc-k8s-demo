@@ -6,7 +6,7 @@ import * as fs from "fs";
 // pull environment from stack name
 const env = pulumi.getStack();
 
-// get outputs from cluster
+// get outputs from cluster stack
 const cluster = new pulumi.StackReference(`/grpc-cluster/${env}`);
 
 // convert the kubeconfig output into a string for provider consumption
@@ -25,7 +25,7 @@ const nginxConfig = new k8s.core.v1.ConfigMap(`${appName}-configmap`, {
 }, { provider: provider });
 const nginxConfigName = nginxConfig.metadata.apply(x => x.name);
 
-// create tls secret from certificate
+// create tls secret from certificates
 const tlsSecret = new k8s.core.v1.Secret(`${appName}-tls`, {
     metadata: { labels: appLabels },
     type: 'Opaque',
@@ -53,7 +53,7 @@ const deployment = new k8s.apps.v1.Deployment(`${appName}-dep`, {
                     image: "nginx:1.17",
                     ports: [{
                         name: "nginx-ingress",
-                        containerPort: 443
+                        containerPort: 1443
                     }],
                     volumeMounts: [{
                         name: `${appName}-nginx-conf`,
@@ -79,7 +79,10 @@ const deployment = new k8s.apps.v1.Deployment(`${appName}-dep`, {
     },
 }, { provider: provider });
 
-// create the NLB based service with ACM certificate
+// create the NLB based service
+// NOTE: ACM powered TLS listener should be available in EKS 1.15 (better option) using annotations
+// service.beta.kubernetes.io/aws-load-balancer-ssl-cert
+// removes need for nginx + grpc_pass
 const service = new k8s.core.v1.Service(`${appName}-svc`, {
     metadata: {
         labels: appLabels,
@@ -98,5 +101,5 @@ const service = new k8s.core.v1.Service(`${appName}-svc`, {
     },
 }, { provider: provider });
 
-// // Export the URL for the load balanced service.
+// export LB hostname for automated pickup
 export const url = service.status.loadBalancer.ingress[0].hostname;

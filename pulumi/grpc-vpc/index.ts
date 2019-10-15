@@ -6,7 +6,6 @@ const env = pulumi.getStack();
 
 // simple vpc for cluster created by AWSx pre-defined secure VPN code
 // https://github.com/pulumi/pulumi-awsx/blob/master/nodejs/awsx/ec2/vpc.ts
-
 // NOTE: the "ignoreChanges" setting is applied to the vpc and subnet options.
 // This is due to EKS adding tagging to the subnets and vpc resources to support
 // EKS finding suitable resources, but due to state tracking of the VPC
